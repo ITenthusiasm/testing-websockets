@@ -1,0 +1,19 @@
+{
+  "name": "testing-websockets",
+  "version": "1.0.0",
+  "description": "Repository exemplifying how to write integration tests for WebSockets using Jest",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITenthusiasm/testing-websockets.git"
+  },
+  "author": "Isaiah Thomason",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ITenthusiasm/testing-websockets/issues"
+  },
+  "homepage": "https://github.com/ITenthusiasm/testing-websockets#readme"
+}
