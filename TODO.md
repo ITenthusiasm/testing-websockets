@@ -1,0 +1,7 @@
+- [ ] Improve/clean/shorten the article
+- [ ] Improve/clean/shorten the code (consider `it` instead of `test` too)
+- [ ] Properly add github links to the article
+- [ ] Add intro for the github repo
+- [ ] Add separate JS/TS versions of the codebase
+- [ ] Add documentation for utility functions
+- [ ] Verify if JSON-ifying WebSocket messages is really necessary for the example.
