@@ -3,5 +3,5 @@
 - [ ] Properly add github links to the article
 - [ ] Add intro for the github repo
 - [x] Add separate JS/TS versions of the codebase
-- [ ] Add documentation for utility functions
+- [x] Add documentation for utility functions
 - [ ] Verify if JSON-ifying WebSocket messages is really necessary for the example.
