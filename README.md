@@ -1,6 +1,22 @@
 # testing-websockets
 
-Repository exemplifying how to write integration tests for WebSockets using Jest
+Repository exemplifying how to write integration tests for WebSocket servers using Jest.
+
+You likely came here from my [Medium article](). If you've decided to read the article here or mess around with the code, I want to give some quick information about the structure of this project's code.
+
+## The Codebase
+
+I've created a JavaScript version of the examples (which the original article uses) and a TypeScript version for anyone who's interested. Unlike in the article, I've also added some JSDocs to help anyone who decides to play around with the utility functions. Because of this, you may see additional imports that are used solely for getting type definitions.
+
+There are some places in the article where old code is refactored. Whenever this happens, I create a new version of the file. For instance, the `createWebSocketServer.test.js` file has 3 versions: a `v1`, a `v2`, and a final version which has no "version indicator". The only difference between the 2 versions of `webSocketTestUtils.js` is the version of `createWebSocketServer.js` that they import.
+
+Due to the fact that the tests have different versions (and are in JS/TS), you'll notice that the `port` at the top of each test is a calculated value instead of a constant. If you decide to run all versions of the test simultaneously, this will keep you from trying to connect to ports that are already in use.
+
+## Packages
+
+In the article, we only install `ws` (prod dependency) and `jest` (dev dependency). Here, you'll see additional `@types` and `@babel` dependencies. These are used to support the TypeScript version of this codebase, and to enable certain ES features. You don't need to worry about them unless you're interested in those things.
+
+Those should be the only major differences. You needn't be worried about any of them. Please keep all feedback on the [Medium article]() unless you're seeking to make a contribution.
 
 # Writing Integration Tests for WebSocket Servers Using Jest and WS
 
