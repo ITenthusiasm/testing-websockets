@@ -1,6 +1,6 @@
 import { startServer, waitForSocketState, createSocketClient } from "./webSocketTestUtils-v1";
 
-const port = 4000;
+const port = 3000 + Number(process.env.JEST_WORKER_ID);
 
 describe("WebSocket Server", () => {
   let server;
