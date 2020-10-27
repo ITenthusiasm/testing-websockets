@@ -27,6 +27,8 @@ Here's our outline:
 - [Installation](#installation)
 - [Project Setup](#project-setup)
 - [Creating Utility Functions](#creating-utility-functions)
+  1. [Start Server Function](#first-utility-start-server-function)
+  2. [Function to Wait for Socket State](#second-utility-function-to-wait-for-socket-state)
 - [Writing the Integration Test](#writing-the-integration-test)
 - [Adding One More Utility for the Client](#adding-one-more-utility-for-the-client)
 - [Covering More Test Cases (Optional)](#covering-more-test-cases-optional)
