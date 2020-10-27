@@ -1,6 +1,6 @@
 - [x] Improve/clean/shorten the article
-- ~~[ ] Improve/clean/shorten the code (consider `it` instead of `test` too)~~
-- [ ] Properly add github links to the article
+- [ ] ~~Improve/clean/shorten the code (consider `it` instead of `test` too)~~
+- [x] Properly add github links to the article
 - [x] Add intro for the github repo
   - [ ] Properly add medium article link to github intro
 - [x] Add separate JS/TS versions of the codebase

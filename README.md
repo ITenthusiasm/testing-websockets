@@ -37,7 +37,7 @@ Here's our outline:
 
 Note that _Covering More Test Cases_ is by far the longest section here and is completely optional. It's only necessary if you want more complex examples.
 
-Everything here can also be found on [github]().
+Everything here can also be found on [github](https://github.com/ITenthusiasm/testing-websockets).
 
 ## Installation
 
@@ -686,6 +686,6 @@ Alternatively, you can create one large test that "goes through the entire flow"
 
 And now we're finally done! In this article, we learned how to create integration tests for WebSocket servers, and we created a few utility functions to greatly simplify this process. Let me know what you thought! I want to make sure this is a sufficient example on writing integration tests for WebSocket servers, so all questions and critiques (and appreciations 😅) are welcome!
 
-As I said at the beginning, this article and the code for its examples can be found on [github](). There, I have a JavaScript version and a TypeScript version of the codebase. Both use JSDocs to make life a little easier if you decide to play around.
+As I said at the beginning, this article and the code for its examples can be found on [github](https://github.com/ITenthusiasm/testing-websockets). There, I have a JavaScript version and a TypeScript version of the codebase. Both use JSDocs to make life a little easier if you decide to play around.
 
 I want to give a special thanks to stackoverflow users [user3215378 and Dmitry Taipov](https://stackoverflow.com/a/21394730) for the inspiration I got for `waitForSocketState`, and to stackoverflow users [FleMo and Timo Tijhof](https://stackoverflow.com/a/55963641) for the inspiration I got for `createSocketClient`. I also want to thank Kent C. Dodds for his insights into writing integration tests. If you're interested, you can find his courses on testing JavaScript [here](https://testingjavascript.com/). He didn't touch on testing WebSocket servers, but he did provide the inspiration for me to try this after several headaches.
