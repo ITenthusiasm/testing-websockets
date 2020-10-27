@@ -105,7 +105,7 @@ Here's what we need:
 
 1. An `await`able function that starts the server and returns it
    - This is necessary for the `beforeAll` and `afterAll` portions of our test file.
-2. A function that can wait for a client to open or close a connection.
+2. A function that can wait for a client to open or close a connection
    - Reliably sending test messages, performing assertions on the responses, and telling Jest when the test is done requires us to have this control.
 
 We'll walk through each one of these functions and apply them to our test. Let's put these utility functions in a separate file called `webSocketTestUtils.js`.
@@ -684,7 +684,7 @@ Alternatively, you can create one large test that "goes through the entire flow"
 
 ## Summary
 
-And now we're finally done! In this article, we learned how to create integration tests for WebSocket servers, and we created a few utility functions to greatly simplify this process. Let me know what you thought! I want to make sure this is a sufficient example on writing integration tests for WebSocket servers, so all questions and critiques (and appreciations xD) are welcome!
+And now we're finally done! In this article, we learned how to create integration tests for WebSocket servers, and we created a few utility functions to greatly simplify this process. Let me know what you thought! I want to make sure this is a sufficient example on writing integration tests for WebSocket servers, so all questions and critiques (and appreciations 😅) are welcome!
 
 As I said at the beginning, this article and the code for its examples can be found on [github](). There, I have a JavaScript version and a TypeScript version of the codebase. Both use JSDocs to make life a little easier if you decide to play around.
 
