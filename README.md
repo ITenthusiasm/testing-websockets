@@ -668,25 +668,13 @@ You'll notice that although we added a couple new features to our WebSocket serv
 
 ## Brief Comments
 
-I'll quickly comment on 3 things before wrapping up.
+I'll quickly comment on 2 things before wrapping up.
 
-### 1) Using Unique Port Numbers in Server Tests
-
-If you're using a WebSocket server, it's likely that you have a real, sophisticated http/s server that handles requests. As regards testing servers, just as it's easier to separate your integration tests for your different server routes, it's also probably best to separate your WebSocket tests into their own space. And if you're running all your tests simultaneously, you'll want to make sure that each instance of your server is using its own unique port to avoid errors.
-
-One way to handle this issue is by doing the following:
-
-```javascript
-const port = 3000 + Number(process.env.JEST_WORKER_ID);
-```
-
-Of course, you can use a number besides 3000 if you want.
-
-### 2) Managing the Order of Your WebSocket Tests
+### 1) Managing the Order of Your WebSocket Tests
 
 If you read the optional portion of this article, you saw that there may be situations where you have to control the order in which your clients send messages. This is always doable if you set up event handlers, but try to do so as cleanly as possible.
 
-### 3) Make Each of Your Tests Specific to the Message Type You're Focusing on
+### 2) Make Each of Your Tests Specific to the Message Type You're Focusing on
 
 Whenever you create an application involving some kind of group or lobby, your tests become heavily event dependent. For instance, before you can test sending a message to a group, it is first necessary for one client to create a group and for another client to join the group.
 
