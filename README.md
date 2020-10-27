@@ -2,7 +2,7 @@
 
 Repository exemplifying how to write integration tests for WebSocket servers using Jest.
 
-You likely came here from my [Medium article](). If you've decided to read the article here or mess around with the code, I want to give some quick information about the structure of this project's code.
+You likely came here from my [Medium article](https://thomason-isaiah.medium.com/writing-integration-tests-for-websocket-servers-using-jest-and-ws-8e5c61726b2a). If you've decided to read the article here or mess around with the code, I want to give some quick information about the structure of this project's code.
 
 ## The Codebase
 
@@ -16,7 +16,7 @@ Due to the fact that the tests have different versions (and are in JS/TS), you'l
 
 In the article, we only install `ws` (prod dependency) and `jest` (dev dependency). Here, you'll see additional `@types` and `@babel` dependencies. These are used to support the TypeScript version of this codebase, and to enable certain ES features. You don't need to worry about them unless you're interested in those things.
 
-Those should be the only major differences. You needn't be worried about any of them. Please keep all feedback on the [Medium article]() unless you're seeking to make a contribution.
+Those should be the only major differences. You needn't be worried about any of them. Please keep all feedback on the [Medium article](https://thomason-isaiah.medium.com/writing-integration-tests-for-websocket-servers-using-jest-and-ws-8e5c61726b2a) unless you're seeking to make a contribution.
 
 # Writing Integration Tests for WebSocket Servers Using Jest and WS
 
