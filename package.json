@@ -4,7 +4,7 @@
   "description": "Repository exemplifying how to write integration tests for WebSocket servers using Jest.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "dependencies": {
     "ws": "^7.3.1"
