@@ -11,7 +11,7 @@ describe("WebSocket Server", () => {
 
   afterAll(() => server.close());
 
-  test("Server echoes the message it receives from client", async () => {
+  test("When given an ECHO message, the server echoes the message it receives from client", async () => {
     // Create test client
     const [client, messages] = await createSocketClient(port, 1);
     const testMessage = { type: "ECHO", value: "This is a test message" };
