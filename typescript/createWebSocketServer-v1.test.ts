@@ -1,16 +1,19 @@
+import { beforeAll, afterAll, describe, test, expect } from "vitest";
 import WebSocket from "ws";
-import { startServer, waitForSocketState } from "./webSocketTestUtils-v1";
+import { startServer, waitForSocketState } from "./webSocketTestUtils-v1.js";
 
-const port = 3000 + Number(process.env.JEST_WORKER_ID);
+const port = 5000 + Number(process.env.VITEST_WORKER_ID);
 
 describe("WebSocket Server", () => {
-  let server;
+  let server: Awaited<ReturnType<typeof startServer>>;
 
   beforeAll(async () => {
     server = await startServer(port);
   });
 
-  afterAll(() => server.close());
+  afterAll(() => {
+    server.close();
+  });
 
   test("Server echoes the message it receives from client", async () => {
     // Create test client
@@ -18,10 +21,10 @@ describe("WebSocket Server", () => {
     await waitForSocketState(client, client.OPEN);
 
     const testMessage = "This is a test message";
-    let responseMessage: WebSocket.Data;
+    let responseMessage: WebSocket.Data | undefined;
 
     client.on("message", (data) => {
-      responseMessage = data;
+      responseMessage = data.toString("utf8");
 
       // Close the client after it receives the response
       client.close();

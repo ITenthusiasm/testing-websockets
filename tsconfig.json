@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["javascript/**/*", "typescript/**/*"]
+}

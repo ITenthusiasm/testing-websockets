@@ -1,23 +1,20 @@
 {
   "name": "testing-websockets",
   "version": "1.0.0",
-  "description": "Repository exemplifying how to write integration tests for WebSocket servers using Jest.",
-  "main": "index.js",
+  "description": "Repository exemplifying how to write integration tests for WebSocket servers using Vitest (compatible with Jest).",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "vitest"
   },
   "dependencies": {
-    "ws": "^7.4.4"
+    "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.14",
-    "@babel/plugin-transform-runtime": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
-    "@babel/preset-typescript": "^7.13.0",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
-    "@types/ws": "^7.4.1",
-    "jest": "^26.6.3"
+    "@types/node": "^18.19.39",
+    "@types/ws": "^8.5.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
   },
   "repository": {
     "type": "git",

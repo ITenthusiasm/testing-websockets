@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 import { Server } from "http";
 
 /**
@@ -7,7 +7,7 @@ import { Server } from "http";
  * @param {Server} server The http server from which to create the WebSocket server
  */
 function createWebSocketServer(server) {
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocketServer({ server });
 
   wss.on("connection", function (webSocket) {
     webSocket.on("message", function (message) {

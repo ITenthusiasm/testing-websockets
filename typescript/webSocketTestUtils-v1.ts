@@ -1,6 +1,6 @@
 import http, { Server } from "http";
-import WebSocket, { Data } from "ws";
-import createWebSocketServer from "./createWebSocketServer-v1";
+import WebSocket from "ws";
+import createWebSocketServer from "./createWebSocketServer-v1.js";
 
 /**
  * Creates and starts a WebSocket server from a simple http server for testing purposes.
@@ -38,7 +38,7 @@ function waitForSocketState(socket: WebSocket, state: number): Promise<void> {
  * @param port The port to connect to on the localhost
  * @returns Tuple containing the created client and any messages it receives
  */
-async function createSocketClient(port: number): Promise<[WebSocket, Data[]]>;
+async function createSocketClient(port: number): Promise<[WebSocket, string[]]>;
 
 /**
  * Creates a socket client that connects to the specified `port`. The client automatically
@@ -47,15 +47,18 @@ async function createSocketClient(port: number): Promise<[WebSocket, Data[]]>;
  * @param closeAfter The number of messages to receive before closing the socket
  * @returns Tuple containing the created client and any messages it receives
  */
-async function createSocketClient(port: number, closeAfter: number): Promise<[WebSocket, Data[]]>;
+async function createSocketClient(port: number, closeAfter: number): Promise<[WebSocket, string[]]>;
 
-async function createSocketClient(port: number, closeAfter?: number): Promise<[WebSocket, Data[]]> {
+async function createSocketClient(
+  port: number,
+  closeAfter?: number
+): Promise<[WebSocket, string[]]> {
   const client = new WebSocket(`ws://localhost:${port}`);
   await waitForSocketState(client, client.OPEN);
-  const messages: WebSocket.Data[] = [];
+  const messages: string[] = [];
 
   client.on("message", (data) => {
-    messages.push(data);
+    messages.push(data.toString("utf8"));
 
     if (messages.length === closeAfter) {
       client.close();

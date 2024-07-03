@@ -4,6 +4,8 @@ Repository exemplifying how to write integration tests for WebSocket servers usi
 
 You likely came here from my [Medium article](https://thomason-isaiah.medium.com/writing-integration-tests-for-websocket-servers-using-jest-and-ws-8e5c61726b2a). If you've decided to read the article here or mess around with the code, I want to give some quick information about the structure of this project's code.
 
+**NOTE: This repo is actively undergoing some updates.** Consequently, it will be out of sync with the Medium article for a little while. My hope is to synchronize everything soon after my experimental improvements are solidified.
+
 ## The Codebase
 
 I've created a JavaScript version of the examples (which the original article uses) and a TypeScript version for anyone who's interested. Unlike in the article, I've also added some JSDocs to help anyone who decides to play around with the utility functions. Because of this, you may see additional imports that are used solely for getting type definitions.

@@ -1,15 +1,18 @@
-import { startServer, waitForSocketState, createSocketClient } from "./webSocketTestUtils";
+import { beforeAll, afterAll, describe, test, expect } from "vitest";
+import { startServer, waitForSocketState, createSocketClient } from "./webSocketTestUtils.js";
 
-const port = 3000 + Number(process.env.JEST_WORKER_ID);
+const port = 5000 + Number(process.env.VITEST_WORKER_ID);
 
 describe("WebSocket Server", () => {
-  let server;
+  let server: Awaited<ReturnType<typeof startServer>>;
 
   beforeAll(async () => {
     server = await startServer(port);
   });
 
-  afterAll(() => server.close());
+  afterAll(() => {
+    server.close();
+  });
 
   test("When given an ECHO message, the server echoes the message it receives from client", async () => {
     // Create test client
@@ -71,7 +74,8 @@ describe("WebSocket Server", () => {
     const testMessage = "This is a test message";
 
     // Setup test clients to send messages and close in the right order
-    client1.on("message", (data) => {
+    client1.on("message", (rawData) => {
+      const data = rawData.toString("utf8");
       if (data === creationMessage.value) {
         const joinMessage = { type: "JOIN_GROUP", value: data };
         const groupMessage = {

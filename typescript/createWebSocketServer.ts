@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 import { Server } from "http";
 
 interface Data {
@@ -18,11 +18,11 @@ const groupNames: string[] = [];
  * @param server The http server from which to create the WebSocket server
  */
 function createWebSocketServer(server: Server): void {
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocketServer({ server });
 
   wss.on("connection", function (webSocket: AugmentedWebSocket) {
     webSocket.on("message", function (message) {
-      const data: Data = JSON.parse(message as string);
+      const data: Data = JSON.parse(message.toString("utf8"));
 
       switch (data.type) {
         case "ECHO": {
@@ -68,7 +68,7 @@ function createWebSocketServer(server: Server): void {
           const { groupName, groupMessage } = data.value;
           if (webSocket.groupName !== groupName) break;
 
-          wss.clients.forEach((ws: AugmentedWebSocket) => {
+          (wss.clients as Set<AugmentedWebSocket>).forEach((ws) => {
             if (ws.groupName === groupName) ws.send(groupMessage);
           });
 
