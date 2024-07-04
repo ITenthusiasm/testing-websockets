@@ -79,7 +79,7 @@ function createWebSocketServer(server) {
           }
         }
       });
-    }
+    },
   );
 }
 

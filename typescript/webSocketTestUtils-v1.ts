@@ -49,10 +49,7 @@ async function createSocketClient(port: number): Promise<[WebSocket, string[]]>;
  */
 async function createSocketClient(port: number, closeAfter: number): Promise<[WebSocket, string[]]>;
 
-async function createSocketClient(
-  port: number,
-  closeAfter?: number
-): Promise<[WebSocket, string[]]> {
+async function createSocketClient(port: number, closeAfter?: number): Promise<[WebSocket, string[]]> {
   const client = new WebSocket(`ws://localhost:${port}`);
   await waitForSocketState(client, client.OPEN);
   const messages: string[] = [];
