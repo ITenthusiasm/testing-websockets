@@ -57,12 +57,9 @@ export class TestWebSocket extends WebSocket {
         clearTimeout(timerId);
       };
 
-      // @ts-expect-error -- Remove after the `@types/ws` library fixes its types.
-      // TODO: Update `ws` types to make `addEventListener` generic and have something like `WebSocketEventMap` for better TS.
       this.addEventListener(state, handleStateEvent, { once: true });
 
       timerId = setTimeout(() => {
-        // @ts-expect-error -- TODO: Remove after library fixes types.
         this.removeEventListener(state, handleStateEvent);
         if (this.readyState === this.OPEN && state === "open") return resolve();
         if (this.readyState === this.CLOSED && state === "close") return resolve();

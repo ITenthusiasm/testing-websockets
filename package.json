@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.19.39",
-    "@types/ws": "^8.5.10",
+    "@types/ws": "^8.5.11",
     "typescript": "^5.5.3",
     "vitest": "^1.6.0"
   },
