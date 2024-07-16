@@ -1,4 +1,4 @@
-import http, { Server } from "http";
+import http from "http";
 import { WebSocket } from "ws";
 import type { MessageEvent } from "ws";
 import createWebSocketServer from "./createWebSocketServer.js";
@@ -8,7 +8,7 @@ import createWebSocketServer from "./createWebSocketServer.js";
  * @param port Port for the server to listen on
  * @returns The created server
  */
-export function startServer(port: number): Promise<Server> {
+export function startServer(port: number): Promise<http.Server> {
   const server = http.createServer();
   createWebSocketServer(server);
 
