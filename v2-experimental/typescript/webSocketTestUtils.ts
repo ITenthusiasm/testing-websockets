@@ -78,6 +78,7 @@ export class TestWebSocket extends WebSocket {
    */
   waitForMessage(message: string, includeExistingMessages = true, timeout = 1000): void | Promise<void> {
     if (includeExistingMessages && this.#messages.includes(message)) return;
+    const originalMessageIndex = this.#messages.lastIndexOf(message);
 
     return new Promise((resolve, reject) => {
       let timerId: NodeJS.Timeout | undefined;
@@ -94,7 +95,11 @@ export class TestWebSocket extends WebSocket {
       timerId = setTimeout(() => {
         this.removeEventListener("message", checkForMessage);
 
-        if (this.#messages.includes(message)) return resolve();
+        const success = includeExistingMessages
+          ? this.#messages.includes(message)
+          : this.#messages.lastIndexOf(message) > originalMessageIndex;
+
+        if (success) return resolve();
         reject(new Error(`WebSocket did not receive the message "${message}" in time.`));
       }, timeout);
     });
