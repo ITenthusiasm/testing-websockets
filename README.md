@@ -42,13 +42,19 @@ Everything here can also be found on [GitHub](https://github.com/ITenthusiasm/te
 
 ## Installation
 
-Before we get started, we'll need to install the necessary packages. We'll be using [`vitest`](https://vitest.dev/) (a test framework compatible with [`jest`](https://jestjs.io)) for our tests and [`ws`](https://github.com/websockets/ws) for our web socket server. You're free to use different tools, but you'll have to adjust your syntax accordingly as you go through the examples.
+Before we get started, we'll need to install the necessary packages. We'll be using [`vitest`](https://vitest.dev/) (a test framework compatible with [`jest`](https://jestjs.io)) for our tests and [`ws`](https://github.com/websockets/ws) for our WebSocket server. You're free to use different tools, but you'll have to adjust your syntax accordingly as you go through the examples.
 
-One more thing: When this article was written, the latest major version of `vitest` was `v2`, and the latest major version of `ws` was `v8`. If newer major versions are available at the time that you read this article, then you're welcome to use those instead. However, you might have to tweak the code in this article if you do so. (Very likely, you'll have very little tweaking to do -- if any.)
+One more thing: When this article was written, the latest major version of `vitest` was `v2`, and the latest major version of `ws` was `v8`. If newer major versions are available at the time that you read this article, then you're welcome to use those instead. However, you might have to tweak the code in this article if you do so. (Very likely, you'll have _very little_ tweaking to do -- if any.)
 
 ```
 npm install ws
 npm install -D vitest
+```
+
+If you are using an IDE and would like to have type information for `Node.js` and the `ws` package, you can also install `@types/node` and `@types/ws`:
+
+```
+npm install -D @types/node @types/ws
 ```
 
 ## Project Setup
@@ -141,7 +147,7 @@ Here, we're merely creating (and starting) a basic server that we can use to tes
 ```js
 // createWebSocketServer.test.js
 import { beforeAll, afterAll, describe, it } from "vitest";
-import { startServer } from "./webSocketTestUtils";
+import { startServer } from "./webSocketTestUtils.js";
 
 const port = 3000;
 
@@ -238,7 +244,7 @@ With the basic utility functions done, we can finally start writing our first in
 ```js
 // createWebSocketServer.test.js
 import { beforeAll, afterAll, describe, it, expect } from "vitest";
-import { startServer, TestWebSocket } from "./webSocketTestUtils";
+import { startServer, TestWebSocket } from "./webSocketTestUtils.js";
 
 const port = 3000;
 const url = `ws://localhost:${port}`;
@@ -261,7 +267,7 @@ describe("WebSocket Server", () => {
     const testMessage = "This is a test message";
 
     const responseMessage = await new Promise((resolve) => {
-      client.addEventListener("message", (data) => resolve(data.toString("utf8")), { once: true });
+      client.addEventListener("message", ({ data }) => resolve(data.toString("utf8")), { once: true });
 
       // 2) Send a client message to the server
       client.send(testMessage);
@@ -440,8 +446,8 @@ If you follow that outline, you'll be able to create your own robust, race-condi
 
 ```js
 // createWebSocketServer.test.js
-import { beforeAll, afterAll, describe, it, expect } from "vitest";
-import { startServer, TestWebSocket } from "./webSocketTestUtils";
+import { beforeAll, afterAll, describe, it } from "vitest";
+import { startServer, TestWebSocket } from "./webSocketTestUtils.js";
 
 const port = 3000;
 const url = `ws://localhost:${port}`;
@@ -457,7 +463,7 @@ describe("WebSocket Server", () => {
     server.close();
   });
 
-  it("Echoes the message it receives from client", async () => {
+  it("Echoes the message it receives from a client", async () => {
     // Create the test client
     const client = new TestWebSocket(url);
     await client.waitUntil("open");
@@ -587,7 +593,7 @@ We have enough to get us going, so we can finally write our next test. The trick
 ```js
 // createWebSocketServer.test.js
 import { beforeAll, afterAll, describe, it, expect } from "vitest";
-import { startServer, TestWebSocket } from "./webSocketTestUtils";
+import { startServer, TestWebSocket } from "./webSocketTestUtils.js";
 
 const port = 3000;
 const url = `ws://localhost:${port}`;

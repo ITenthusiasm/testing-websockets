@@ -1,7 +1,7 @@
 import http from "http";
 import { WebSocket } from "ws";
 import type { MessageEvent } from "ws";
-import createWebSocketServer from "./createWebSocketServer.js";
+import createWebSocketServer from "./createWebSocketServer-v1.js";
 
 /**
  * Creates and starts a WebSocket server from a simple http server for testing purposes.

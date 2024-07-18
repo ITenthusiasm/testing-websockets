@@ -1,14 +1,13 @@
 import http from "http";
 import { WebSocket } from "ws";
-import type { MessageEvent } from "ws";
 import createWebSocketServer from "./createWebSocketServer.js";
 
 /**
  * Creates and starts a WebSocket server from a simple http server for testing purposes.
- * @param port Port for the server to listen on
- * @returns The created server
+ * @param {number} port Port for the server to listen on
+ * @returns {Promise<import("node:http").Server>} The created server
  */
-export function startServer(port: number): Promise<http.Server> {
+export function startServer(port) {
   const server = http.createServer();
   createWebSocketServer(server);
 
@@ -18,38 +17,44 @@ export function startServer(port: number): Promise<http.Server> {
 }
 
 export class TestWebSocket extends WebSocket {
-  #messages: string[] = [];
+  /** @type {string[]} */
+  #messages = [];
 
-  constructor(...args: ConstructorParameters<typeof WebSocket>) {
+  /** @param {ConstructorParameters<typeof WebSocket>} args */
+  constructor(...args) {
     super(...args);
 
-    const addNewMessage = (event: MessageEvent) => this.#messages.push(event.data.toString("utf8"));
+    /** @param {import("ws").MessageEvent} event */
+    const addNewMessage = (event) => this.#messages.push(event.data.toString("utf8"));
+
     this.addEventListener("message", addNewMessage);
     this.addEventListener("close", () => this.removeEventListener("message", addNewMessage), { once: true });
   }
 
-  /** The stored messages that the `WebSocket` has received (and not yet {@link clearMessages cleared}). */
-  get messages(): string[] {
+  /** @returns {string[]} The stored messages that the `WebSocket` has received (and not yet {@link clearMessages cleared}). */
+  get messages() {
     return this.#messages.slice();
   }
 
-  /** Clears all of the stored {@link messages} that were previously received by the `WebSocket`. */
-  clearMessages(): void {
+  /** Clears all of the stored {@link messages} that were previously received by the `WebSocket`. @returns {void} */
+  clearMessages() {
     this.#messages.splice(0, this.#messages.length);
   }
 
   /**
    * Waits until the `WebSocket` enters the specified `state`.
-   * @param state
-   * @param timeout The time (in `milliseconds`) to wait for the desired `state`. Defaults to `1000ms`.
+   * @param {"open" | "close"} state
+   * @param {number} [timeout] The time (in `milliseconds`) to wait for the desired `state`. Defaults to `1000ms`.
+   * @returns {void | Promise<void>}
    */
-  waitUntil(state: "open" | "close", timeout = 1000): void | Promise<void> {
+  waitUntil(state, timeout = 1000) {
     if (this.readyState === this.OPEN && state === "open") return;
     if (this.readyState === this.CLOSED && state === "close") return;
 
     return new Promise((resolve, reject) => {
-      let timerId: NodeJS.Timeout | undefined;
-      const handleStateEvent = (): void => {
+      /** @type {NodeJS.Timeout | undefined} */
+      let timerId;
+      const handleStateEvent = () => {
         resolve();
         clearTimeout(timerId);
       };
@@ -68,18 +73,22 @@ export class TestWebSocket extends WebSocket {
 
   /**
    * Waits until the `WebSocket` receives the specified `message`.
-   * @param message
-   * @param includeExistingMessages Indicates that the {@link messages} currently stored by
+   * @param {string} message
+   * @param {boolean} [includeExistingMessages] Indicates that the {@link messages} currently stored by
    * the WebSocket should be checked before waiting for new messages. Defaults to `true`.
-   * @param timeout The time (in `milliseconds`) to wait for the desired `message`. Defaults to `1000ms`.
+   * @param {number} [timeout] The time (in `milliseconds`) to wait for the desired `message`. Defaults to `1000ms`.
+   * @returns {void | Promise<void>}
    */
-  waitForMessage(message: string, includeExistingMessages = true, timeout = 1000): void | Promise<void> {
+  waitForMessage(message, includeExistingMessages = true, timeout = 1000) {
     if (includeExistingMessages && this.#messages.includes(message)) return;
     const originalMessageIndex = this.#messages.lastIndexOf(message);
 
     return new Promise((resolve, reject) => {
-      let timerId: NodeJS.Timeout | undefined;
-      const checkForMessage = (event: MessageEvent): void => {
+      /** @type {NodeJS.Timeout | undefined} */
+      let timerId;
+
+      /** @param {import("ws").MessageEvent} event */
+      const checkForMessage = (event) => {
         if (event.data.toString("utf8") !== message) return;
 
         resolve();
@@ -104,16 +113,17 @@ export class TestWebSocket extends WebSocket {
 
   /**
    * Waits until the `WebSocket` holds the specified number of stored {@link messages} (or more).
-   * @param count
-   * @param timeout The time (in `milliseconds`) to wait for the desired message `count`. Defaults to `1000ms`.
-   * @returns the `WebSocket`'s stored {@link messages}.
+   * @param {number} count
+   * @param {number} [timeout] The time (in `milliseconds`) to wait for the desired message `count`. Defaults to `1000ms`.
+   * @returns {this["messages"] | Promise<this["messages"]>} the `WebSocket`'s stored {@link messages}.
    */
-  waitForMessageCount(count: number, timeout = 1000): this["messages"] | Promise<this["messages"]> {
+  waitForMessageCount(count, timeout = 1000) {
     if (this.#messages.length >= count) return this.messages;
 
     return new Promise((resolve, reject) => {
-      let timerId: NodeJS.Timeout | undefined;
-      const watchMessageCount = (): void => {
+      /** @type {NodeJS.Timeout | undefined} */
+      let timerId;
+      const watchMessageCount = () => {
         if (this.#messages.length < count) return;
 
         resolve(this.messages);

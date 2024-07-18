@@ -227,11 +227,8 @@ class TestWebSocket extends WebSocket {
 
   constructor(...args: ConstructorParameters<typeof WebSocket>) {
     super(...args);
-    const addNewMessage = (event: MessageEvent): void => {
-      const data = event.data.toString("utf8");
-      this.#messages.push(data);
-    };
 
+    const addNewMessage = (event: MessageEvent) => this.#messages.push(event.data.toString("utf8"));
     this.addEventListener("message", addNewMessage);
     this.addEventListener("close", () => this.removeEventListener("message", addNewMessage), { once: true });
   }

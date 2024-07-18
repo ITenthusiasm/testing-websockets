@@ -5,7 +5,8 @@ const port = 3000 + Number(process.env.VITEST_WORKER_ID);
 const url = `ws://localhost:${port}`;
 
 describe("WebSocket Server", () => {
-  let server: Awaited<ReturnType<typeof startServer>>;
+  /** @type {Awaited<ReturnType<typeof startServer>>} */
+  let server;
 
   beforeAll(async () => {
     server = await startServer(port);

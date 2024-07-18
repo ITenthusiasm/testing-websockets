@@ -1,15 +1,16 @@
-import { WebSocket, WebSocketServer } from "ws";
-import { Server } from "http";
+import { WebSocketServer } from "ws";
+import type { WebSocket } from "ws";
+import type { Server } from "http";
 
 type Data =
-  | { type: "ECHO" | "ECHO_TIMES_3" | "ECHO_TO_ALL" | "CREATE_GROUP" | "JOIN_GROUP"; value: string }
+  | { type: "ECHO" | "ECHO_TIMES_3" | "CREATE_GROUP" | "JOIN_GROUP"; value: string }
   | { type: "MESSAGE_GROUP"; value: { groupName: string; groupMessage: string } };
 
 interface AugmentedWebSocket extends WebSocket {
-  groupName: string;
+  groupName?: string;
 }
 
-const groupNames = new Set<AugmentedWebSocket["groupName"]>();
+const groupNames = new Set<string>();
 
 /**
  * Creates a WebSocket server from a Node http server. The server must be started externally.
@@ -29,10 +30,6 @@ function createWebSocketServer(server: Server): void {
         }
         case "ECHO_TIMES_3": {
           for (let i = 1; i <= 3; i++) webSocket.send(data.value);
-          break;
-        }
-        case "ECHO_TO_ALL": {
-          wss.clients.forEach((ws) => ws.send(data.value));
           break;
         }
         case "CREATE_GROUP": {
