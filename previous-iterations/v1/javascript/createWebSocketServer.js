@@ -7,7 +7,7 @@ import { Server } from "http";
  * @property {any} value
  */
 
-/** @typedef {WebSocket & { groupName: string}} AugmentedWebSocket */
+/** @typedef {WebSocket & { groupName: string }} AugmentedWebSocket */
 
 /** @type {string[]} */
 const groupNames = [];
@@ -79,7 +79,7 @@ function createWebSocketServer(server) {
           }
         }
       });
-    },
+    }
   );
 }
 
