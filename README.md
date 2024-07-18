@@ -20,6 +20,8 @@ Those should be the only major differences. You needn't be worried about any of 
 
 # Writing Integration Tests for WebSocket Servers Using Jest/Vitest and WS
 
+> **_Update: This article was revamped on July 18, 2024 to provide developers with a superior approach to writing tests for WebSocket servers. I hope you enjoy it!_** 😄
+
 WebSockets are very useful for ongoing communication between a client and a server. They're simple to use in nature, but they're not so simple when it comes to writing tests. This is because WebSockets are event-driven and have no promise-based API. For instance, maybe you want to test that your WebSocket server returns the correct message to a client with Jest/Vitest. How will you wait for a connection before having your client send a message? How will you get a hold of the response message that your client receives and perform your assertions? How will Jest/Vitest know when a given test is finished? These are the kinds of questions I hope to address in this post on writing integration tests for WebSocket servers.
 
 Here's our outline:
@@ -678,6 +680,8 @@ switch (data.type) {
   }
   // Group Chat Switch Cases ...
 }
+
+// ...
 
 export default createWebSocketServer;
 ```
