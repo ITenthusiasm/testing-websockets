@@ -1,7 +1,7 @@
 import { beforeAll, afterAll, describe, test, expect } from "vitest";
 import { startServer, waitForSocketState, createSocketClient } from "./webSocketTestUtils.js";
 
-const port = 5000 + Number(process.env.VITEST_WORKER_ID);
+const port = 3000 + Number(process.env.VITEST_WORKER_ID);
 
 describe("WebSocket Server", () => {
   /** @type {Awaited<ReturnType<typeof startServer>>} */
