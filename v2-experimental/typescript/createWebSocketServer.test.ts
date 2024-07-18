@@ -77,8 +77,8 @@ describe("WebSocket Server", () => {
     // Then send a group message
     const groupMessage = { type: "MESSAGE_GROUP", value: { groupName, groupMessage: testMessage } };
     client2.send(JSON.stringify(groupMessage));
-    await client2.waitForMessage(testMessage);
     await client1.waitForMessage(testMessage);
+    await client2.waitForMessage(testMessage);
 
     // Client 3 should have received no messages
     expect(client3.messages.length).toBe(0);
