@@ -11,5 +11,5 @@
     "noEmit": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["v2-experimental/**/*", "previous-iterations/**/*"]
+  "include": ["javascript/**/*.js", "typescript/**/*.ts", "previous-iterations/**/*"]
 }
