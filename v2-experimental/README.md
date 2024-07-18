@@ -1,6 +1,6 @@
 # Revisiting My Approach for Testing WebSocket Servers
 
-About 3 years ago, I wrote an [article](https://thomason-isaiah.medium.com/writing-integration-tests-for-websocket-servers-using-jest-and-ws-8e5c61726b2a) explaining how to test WebSocket servers (sanely) with [`ws`](https://github.com/websockets/ws) and [`jest`](https://jestjs.io). Back then, I was very happy with my approach because it enabled me to write tests in a way that was more readable and more maintainable than many other alternatives out there. However, after coming back to that article some years later, I discovered some flaws in my previous way of doing things. Now I believe that a different approach would vastly improve the readability/maintainability of developers' WebSocket tests.
+About 3 years ago, I wrote an [article](TODO: Link to GitHub markdown file) explaining how to test WebSocket servers (sanely) with [`ws`](https://github.com/websockets/ws) and [`jest`](https://jestjs.io). Back then, I was very happy with my approach because it enabled me to write tests in a way that was more readable and more maintainable than many other alternatives out there. However, after coming back to that article some years later, I discovered some flaws in my previous way of doing things. Now I believe that a different approach would vastly improve the readability/maintainability of developers' WebSocket tests.
 
 In this article, I want to go over the shortcomings of my previous approach, and the benefits of my new one. I know how difficult it can be to write good integration tests for WebSocket servers, so I want to make sure that the solution which I give to you all is as helpful and clear as possible.
 
@@ -319,7 +319,7 @@ class TestWebSocket extends WebSocket {
 }
 ```
 
-I hope that this code doesn't intimidate you! Remember: One of our primary goals is to "Prevent race conditions (and/or make them 'recoverable')". The price to pay for satisfying that goal is writing more defensive code. However, by writing this defensive code, we'll end up with tests that are more clear and more consistent! Let's walk through each part of this `waitUntil` method.
+I hope that this code doesn't intimidate you! Remember: One of our primary goals is to "Prevent race conditions (and/or make them 'recoverable')". The price to pay for satisfying that requirement is writing more defensive code. However, by writing this defensive code, we'll end up with tests that are more clear and more consistent! Let's walk through each part of this `waitUntil` method.
 
 **First**: If the client is already `OPEN` (or `CLOSED`), then we don't create a `Promise`. Instead, the method simply returns synchronously. This approach prevents us from generating unnecessary `Promise`s. As a result, it adds some protection against race conditions. (For the clever among you: No, the `setTimeout` call is not enough protection.)
 
@@ -329,9 +329,7 @@ I hope that this code doesn't intimidate you! Remember: One of our primary goals
 
 Note that it is _theoretically_ possible for a WebSocket client to `open` (or `close`) _after_ the returned `Promise` is created but _before_ the corresponding event handler is registered. In that (rare) scenario, we "recover" from the race condition by `resolv`ing the `Promise` if the client is in the proper `readyState` when the timeout function is executed.
 
-It's also theoretically possible that a test would want to continue executing even after a call to `client.waitUntil()` times out. When that happens, we should unregister our obsolete event handler to avoid wasting resources. (Similarly, if somehow the `open`/`close` event handler failed to be called, but the client had the correct `readyState` when the timeout function was executed, then we should unregister our obsolete event handler.)
-
-**Fourth**: Cleanup. If our returned `Promise` resolves, then the timeout function should be cleared. If the timeout function is executed, then the unused event handler should be unregistered.
+**Fourth**: Cleanup. If our returned `Promise` resolves, then the timeout function is cleared because it is no longer needed. If the timeout function is executed, then the unused event handler is unregistered because it is no longer relevant.
 
 Sidenote: Some of you may have realized that the synchronous check at the beginning of `waitUntil` is _technically_ unnecessary. This is because our timeout function can handle scenarios where the client is `OPEN` (or `CLOSED`) before the `handleStateEvent` function is registered. However, there are two problems with relying on that assumption:
 
@@ -361,6 +359,7 @@ class TestWebSocket extends WebSocket {
    */
   waitForMessage(message: string, includeExistingMessages = true, timeout = 1000): void | Promise<void> {
     if (includeExistingMessages && this.#messages.includes(message)) return;
+    const originalMessageIndex = this.#messages.lastIndexOf(message);
 
     return new Promise((resolve, reject) => {
       let timerId: NodeJS.Timeout | undefined;
@@ -377,7 +376,11 @@ class TestWebSocket extends WebSocket {
       timerId = setTimeout(() => {
         this.removeEventListener("message", checkForMessage);
 
-        if (this.#messages.includes(message)) return resolve();
+        const success = includeExistingMessages
+          ? this.#messages.includes(message)
+          : this.#messages.lastIndexOf(message) > originalMessageIndex;
+
+        if (success) return resolve();
         reject(new Error(`WebSocket did not receive the message "${message}" in time.`));
       }, timeout);
     });
@@ -385,7 +388,7 @@ class TestWebSocket extends WebSocket {
 }
 ```
 
-Again, the price for writing clearer, more maintainable, less-race-condition-prone tests is having more defensive helper methods. Let's walk through what we're doing here. It shouldn't be too complicated since this approach is _very similar_ to our approach in `waitUntil`. Let's walk through what we're doing here:
+Again, the price for writing clearer, more maintainable, less-race-condition-prone tests is having more defensive helper methods. Let's walk through what we're doing here. It shouldn't be too complicated since this approach is _very similar_ to our approach in `waitUntil`.
 
 **First**: If the client has already received the desired message, then we return synchronously _as long as the `includeExistingMessages` option is `true`_. It's theoretically possible that a client could receive the same message multiple times. If the stored messages have not been cleared and the developer is anticipating a _new_ message matching the provided string, then they can set `includeExistingMessages` to `false` to handle that use case.
 
@@ -397,7 +400,7 @@ As with `waitUntil`, our approach here prevents us from generating unnecessary `
 
 In the _unlikely_ scenario where a WebSocket client receives the desired message _after_ the returned `Promise` is created but _before_ the corresponding event handler is registered, we "recover" the race condition by `resolv`ing the `Promise`.
 
-**Fourth**: Cleanup. If our returned `Promise` resolves, then the timeout function should be cleared. If the timeout function is executed, then the unused event handler should be unregistered. As with before, we take responsibility for cleaning up our timers and event listeners in all circumstances.
+**Fourth**: Cleanup. If our returned `Promise` resolves, then the timeout function is cleared because it is no longer needed. If the timeout function is executed, then the unused event handler is unregistered because it is no longer relevant. As with before, we take responsibility for cleaning up our timers and event listeners in all circumstances.
 
 Just like I said earlier, the general concept behind our `waitForMessage` helper is very similar to the one we used for our `waitUntil` helper. So does it really provide that much value? **Yes! Incredibly so!** Remember the awkward code that we wrote for our Group Chat Room test?
 

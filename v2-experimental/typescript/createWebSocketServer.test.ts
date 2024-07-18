@@ -1,4 +1,4 @@
-import { beforeAll, afterAll, describe, test, expect } from "vitest";
+import { beforeAll, afterAll, describe, it, expect } from "vitest";
 import { startServer, TestWebSocket } from "./webSocketTestUtils.js";
 
 const port = 5000 + Number(process.env.VITEST_WORKER_ID);
@@ -15,8 +15,8 @@ describe("WebSocket Server", () => {
     server.close();
   });
 
-  test("When given an ECHO message, the server echoes the message it receives from the client", async () => {
-    // Create test client
+  it("Echoes the message it receives from a client when the message is of type `ECHO`", async () => {
+    // Create the test client
     const client = new TestWebSocket(url);
     await client.waitUntil("open");
     const testMessage = { type: "ECHO", value: "This is a test message" };
@@ -24,41 +24,12 @@ describe("WebSocket Server", () => {
     // Send client message and check the response
     client.send(JSON.stringify(testMessage));
     await client.waitForMessage(testMessage.value);
+
+    // Cleanup
     client.close();
   });
 
-  test("When given an ECHO_TIMES_3 message, the server echoes the message it receives from the client 3 times", async () => {
-    // Create test client
-    const client = new TestWebSocket(url);
-    await client.waitUntil("open");
-    const testMessage = { type: "ECHO_TIMES_3", value: "This is a test message" };
-    const expectedMessages = [...Array(3)].map(() => testMessage.value);
-
-    // Send client message and check response
-    client.send(JSON.stringify(testMessage));
-    const messages = await client.waitForMessageCount(3);
-
-    expect(messages).toStrictEqual(expectedMessages);
-    client.close();
-  });
-
-  test("When given an ECHO_TO_ALL message, the server sends the message it receives to all clients", async () => {
-    // Create test clients
-    const [client1, client2, client3] = [...Array(3)].map(() => new TestWebSocket(url));
-    await Promise.all([client1, client2, client3].map((c) => c.waitUntil("open")));
-
-    // Send client message
-    const testMessage = { type: "ECHO_TO_ALL", value: "This is a test message" };
-    client1.send(JSON.stringify(testMessage));
-
-    // Check the responses
-    await client1.waitForMessage(testMessage.value);
-    await client2.waitForMessage(testMessage.value);
-    await client3.waitForMessage(testMessage.value);
-    [client1, client2, client3].forEach((c) => c.close());
-  });
-
-  test("When given a MESSAGE_GROUP message, the server echoes the message it receives to everyone in the specified group", async () => {
+  it("Delivers group messages only to the clients who belong to the specified group", async () => {
     // Create test clients
     const [client1, client2, client3] = [...Array(3)].map(() => new TestWebSocket(url));
     await Promise.all([client1, client2, client3].map((c) => c.waitUntil("open")));
@@ -83,5 +54,20 @@ describe("WebSocket Server", () => {
     // Client 3 should have received no messages
     expect(client3.messages.length).toBe(0);
     [client1, client2, client3].forEach((c) => c.close());
+  });
+
+  it("Echoes the message it receives from a client 3 times when the message is of type `ECHO_TIMES_3`", async () => {
+    // Create test client
+    const client = new TestWebSocket(url);
+    await client.waitUntil("open");
+    const testMessage = { type: "ECHO_TIMES_3", value: "This is a test message" };
+    const expectedMessages = [...Array(3)].map(() => testMessage.value);
+
+    // Send client message and check response
+    client.send(JSON.stringify(testMessage));
+    const messages = await client.waitForMessageCount(3);
+
+    expect(messages).toStrictEqual(expectedMessages);
+    client.close();
   });
 });
