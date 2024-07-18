@@ -648,7 +648,7 @@ describe("WebSocket Server", () => {
 
 Can you believe how easy that test was to write?!? Imagine how complex/verbose the test would be if we had to use callbacks _and_ set them up in the proper order! A complex test was made _extremely_ easy to write thanks to our `TestWebSocket`'s helper methods! This is where a solid knowledge of `Promise`s and event handling really pays off!
 
-(For those of you who aren't as excited as I am, please understand: This is my second iteration of this article. In my [first iteration](TODO: LINK to old GitHub code), the utilities that I provided weren't as good. As a result, testing this use case required almost 2x the lines code, and the test was far less readable. The code that you see above is incredible compared to that!)
+(For those of you who aren't as excited as I am, please understand: This is my second iteration of this article. In my [first iteration](https://github.com/ITenthusiasm/testing-websockets/tree/main/previous-iterations/v1/README.md), the [utilities](https://github.com/ITenthusiasm/testing-websockets/tree/main/previous-iterations/v1/javascript/webSocketTestUtils.js) that I provided weren't as good. As a result, [testing this use case](https://github.com/ITenthusiasm/testing-websockets/tree/main/previous-iterations/v1/javascript/createWebSocketServer.test.js#L69) required almost 2x the lines code, and the test was far less readable. The code that you see above is incredible compared to that!)
 
 You'll notice that although we added multiple new features to our WebSocket server, we've only created a test for one scenario. I'll leave testing the other scenarios as an exercise for you if you're up for it. Most of the other ones are of similar (or easier) difficulty.
 
