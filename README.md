@@ -38,7 +38,7 @@ Here's our outline:
 
 Note that _Covering More Test Cases_ is completely optional. It's only necessary if you want more complex examples.
 
-Everything here can also be found on [github](https://github.com/ITenthusiasm/testing-websockets).
+Everything here can also be found on [GitHub](https://github.com/ITenthusiasm/testing-websockets).
 
 ## Installation
 
